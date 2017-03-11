@@ -4,12 +4,12 @@ var express = require('express'); // now the express api is available
 var app = express();
 const PORT = process.env.PORT || 3000;
 
-// express middleware
+// express middleware to redirect https traffic
 app.use(function(req, res, next) {
-  if (req.headers['x-forwarded-proto'] === 'http') {
-    next();
-  } else {
+  if (req.headers['x-forwarded-proto'] === 'https') {
     res.redirect('http://' + req.hostname + req.url);
+  } else {
+    next();
   }
 });
 
