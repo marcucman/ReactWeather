@@ -17,8 +17,9 @@ module.exports = {
         return res.data.main.temp;
         console.log("The request worked");
       }
-    }, function (res) {
-      throw new Error(res.data.message);
+    }, function (res) { // ERROR
+      // throw new Error(res.data.message); // old error handler
+      throw new Error('Unable to fetch weather for that location');
       console.log("Nothing was even returned");
     });
   }
