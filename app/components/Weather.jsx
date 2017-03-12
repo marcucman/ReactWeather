@@ -15,7 +15,9 @@ var Weather = React.createClass({
     // recall, this function will be executed in another file. The meaning of this will change if not bound
     this.setState({
       isLoadingState: true,
-      errorMessage: undefined // clear any error message
+      errorMessage: undefined, // clear any error message
+      locationState: undefined,
+      tempState: undefined
     });
 
     openWeatherMap.getTemp(locationReceived).then(function (temp) { // SUCCESS
@@ -30,6 +32,27 @@ var Weather = React.createClass({
         errorMessage: e.message
       });
     });
+  },
+  componentDidMount: function () {
+    // react-router gives you access to the query string through props
+    var location = this.props.location.query.location;
+
+    if (location && location.length > 0) {
+      this.handleSearch(location);
+      // set the URL to the Root directory
+      window.location.hash = '#/';
+    }
+  },
+  // this will fire when the URL changes and will receive the props sent by react-router
+  // this handles the case when the top-right search is used while the user is on the Get Weather page
+  componentWillReceiveProps: function(newProps) { // update props
+    var location = newProps.location.query.location;
+
+    if (location && location.length > 0) {
+      this.handleSearch(location);
+      // set the URL to the Root directory
+      window.location.hash = '#/';
+    }
   },
   render: function () {
     var {isLoadingState, tempState, locationState, errorMessage} = this.state;
